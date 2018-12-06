@@ -1,15 +1,16 @@
 import {
   map,
-  path,
+  pathOr,
 } from "ramda";
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Container, Table } from "semantic-ui-react";
 import actions from "../actions";
 
-function PeopleList({people}) {
+function PeopleList({people, history}) {
   const rows = map((p) => (
-    <PeopleListRow key={p.url} {...p} />
+    <PeopleListRow key={p.url} {...p} history={history} />
   ), people);
 
   return (
@@ -21,34 +22,46 @@ function PeopleList({people}) {
             <Table.HeaderCell>
               Name
             </Table.HeaderCell>
+            <Table.HeaderCell>
+              Gender
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              Birth Year
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-        <Table.Header>
+        <Table.Body style={{cursor:"pointer"}}>
           {rows}
-        </Table.Header>
+        </Table.Body>
       </Table>
     </Container>
   );
 }
 
-function PeopleListRow({name}) {
+function PeopleListRow({history, url, name, gender, birth_year}) {
   return (
-    <Table.Row>
+    <Table.Row onClick={() => history.push(`/people/${encodeURIComponent(url)}`)}>
       <Table.Cell>
         {name}
+      </Table.Cell>
+      <Table.Cell>
+        {gender}
+      </Table.Cell>
+      <Table.Cell>
+        {birth_year}
       </Table.Cell>
     </Table.Row>
   );
 }
 
 function mapStateToProps(state) {
-  const ids = path(["people","byPages",1], state);
+  const ids = pathOr([], ["people","byPages",1], state);
   return {
-    people: map((id) => path(["people","byIds",id], state), ids),
+    people: map((id) => pathOr({}, ["people","byIds",id], state), ids),
   };
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   actions,
-)(PeopleList);
+)(PeopleList));

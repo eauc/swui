@@ -9,3 +9,10 @@ export function peopleLoadPage({page}) {
     },
   });
 }
+
+export function peopleLoadDetails({id}) {
+  return axios({
+    method: "GET",
+    url: id,
+  });
+}
