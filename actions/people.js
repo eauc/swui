@@ -15,8 +15,8 @@ export default (actions) => {
     peopleLoadPage({page = 1} = {}) {
       return (dispatch) => {
         return apiLoadPage({page})
-          .then(({data: {results}}) => {
-            dispatch({type: PEOPLE_LOAD_PAGE, page, people: results});
+          .then(({data: {count, results}}) => {
+            dispatch({type: PEOPLE_LOAD_PAGE, count, page, people: results});
           });
       };
     },

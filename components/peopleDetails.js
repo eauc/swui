@@ -35,7 +35,7 @@ function PeopleDetails(props) {
   ), species);
   const vs = map(({url, name}) => (
     <li key={url}>
-      <Link to={`/vehicles/${encodeURIComponent(url)}`}>
+      <Link to={`/vehicles/details/${encodeURIComponent(url)}`}>
         {name || url}
       </Link>
     </li>

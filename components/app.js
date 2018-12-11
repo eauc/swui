@@ -24,25 +24,27 @@ const App = () => (
         </Segment>
 
         <Route exact path="/" render={() => (
-          <Redirect to="/people"/>
+          <Redirect to="/people/1"/>
         )}/>
-    <Route exact path="/people/" render={() => {
-      store.dispatch(actions.peopleLoadPage());
-      return <PeopleList />;
-    }} />
-    <Route exact path="/people/:id" render={(props) => {
+    <Route exact path="/people/details/:id" render={(props) => {
       const id = decodeURIComponent(path(["match","params","id"], props));
       store.dispatch(actions.peopleLoadVehiclesDetails({id}));
       return <PeopleDetails />;
     }} />
-    <Route exact path="/vehicles/" render={() => {
-      store.dispatch(actions.vehiclesLoadPage());
-      return <VehiclesList />;
+    <Route exact path="/people/:page" render={(props) => {
+      const page = decodeURIComponent(path(["match","params","page"], props));
+      store.dispatch(actions.peopleLoadPage({page}));
+      return <PeopleList />;
     }} />
-    <Route exact path="/vehicles/:id" render={(props) => {
+    <Route exact path="/vehicles/details/:id" render={(props) => {
       const id = decodeURIComponent(path(["match","params","id"], props));
       store.dispatch(actions.vehiclesLoadPilotsDetails({id}));
       return <VehiclesDetails />;
+    }} />
+    <Route exact path="/vehicles/:page" render={(props) => {
+      const page = decodeURIComponent(path(["match","params","page"], props));
+      store.dispatch(actions.vehiclesLoadPage({page}));
+      return <VehiclesList />;
     }} />
       </div>
     </Router>

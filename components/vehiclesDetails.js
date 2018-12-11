@@ -32,7 +32,7 @@ function VehiclesDetails(props) {
   ), films);
   const ps = map(({url, name}) => (
     <li key={url}>
-      <Link to={`/people/${encodeURIComponent(url)}`}>
+      <Link to={`/people/details/${encodeURIComponent(url)}`}>
         {name || url}
       </Link>
     </li>

@@ -15,8 +15,8 @@ export default (actions) => {
     vehiclesLoadPage({page = 1} = {}) {
       return (dispatch) => {
         return apiLoadPage({page})
-          .then(({data: {results}}) => {
-            dispatch({type: VEHICLES_LOAD_PAGE, page, vehicles: results});
+          .then(({data: {count, results}}) => {
+            dispatch({type: VEHICLES_LOAD_PAGE, count, page, vehicles: results});
           });
       };
     },

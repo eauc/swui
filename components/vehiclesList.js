@@ -1,15 +1,19 @@
 import {
+  isEmpty,
   map,
   pathOr,
+  range,
 } from "ramda";
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { Container, Table } from "semantic-ui-react";
+import { Container, Pagination, Table } from "semantic-ui-react";
 import actions from "../actions";
 
-function VehiclesList({vehicles, history}) {
-  const rows = map((p) => (
+function VehiclesList({page, nbPages, vehicles, history}) {
+  const rows = isEmpty(vehicles) ? map((k) => (
+    <VehiclesListPlaceholder key={k} />
+  ), range(1, 10)) : map((p) => (
     <VehiclesListRow key={p.url} {...p} history={history} />
   ), vehicles);
 
@@ -23,10 +27,10 @@ function VehiclesList({vehicles, history}) {
               Name
             </Table.HeaderCell>
             <Table.HeaderCell>
-              Gender
+              Class
             </Table.HeaderCell>
             <Table.HeaderCell>
-              Birth Year
+              Manufacturer
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -34,29 +38,46 @@ function VehiclesList({vehicles, history}) {
           {rows}
         </Table.Body>
       </Table>
+      <Pagination
+        activePage={page} totalPages={nbPages}
+        onPageChange={(evt, {activePage}) => history.push(`/vehicles/${activePage}`)}/>
     </Container>
   );
 }
 
-function VehiclesListRow({history, url, name, gender, birth_year}) {
+function VehiclesListRow({history, url, name, manufacturer, vehicle_class}) {
   return (
-    <Table.Row onClick={() => history.push(`/vehicles/${encodeURIComponent(url)}`)}>
+    <Table.Row onClick={() => history.push(`/vehicles/details/${encodeURIComponent(url)}`)}>
       <Table.Cell>
         {name}
       </Table.Cell>
       <Table.Cell>
-        {gender}
+        {vehicle_class}
       </Table.Cell>
       <Table.Cell>
-        {birth_year}
+        {manufacturer}
       </Table.Cell>
     </Table.Row>
   );
 }
 
-function mapStateToProps(state) {
-  const ids = pathOr([], ["vehicles","byPages",1], state);
+function VehiclesListPlaceholder() {
+  return (
+    <Table.Row>
+      <Table.Cell colSpan="3"
+                  textAlign="center">
+        Loading...
+      </Table.Cell>
+    </Table.Row>
+  );
+}
+
+function mapStateToProps(state, props) {
+  const page = pathOr("1", ["match","params","page"], props);
+  const ids = pathOr([], ["vehicles","byPages",page], state);
   return {
+    nbPages: pathOr(1, ["vehicles","nbPages"], state),
+    page: parseInt(page, 10),
     vehicles: map((id) => pathOr({}, ["vehicles","byIds",id], state), ids),
   };
 };

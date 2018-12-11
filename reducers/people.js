@@ -17,6 +17,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
+  nbPages: 1,
   byIds: {},
   byPages: {},
 };
@@ -33,12 +34,13 @@ export default function(state = initialState, action) {
     }
   case PEOPLE_LOAD_PAGE:
     {
-      const {page, people} = action;
+      const {count, page, people} = action;
       const idPeoplePairs = map((p) => [p.url, p], people);
       const ids = map(([id]) => id, idPeoplePairs);
       return pipe(
         over(lensProp("byIds"), mergeDeepLeft(fromPairs(idPeoplePairs))),
         over(lensProp("byPages"), assoc(page, ids)),
+        assoc("nbPages", Math.ceil(count / 10)),
       )(state);
     }
   default:
