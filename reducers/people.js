@@ -1,13 +1,20 @@
 import {
+  __,
   assoc,
+  compose,
   fromPairs,
+  lensPath,
   lensProp,
   map,
   mergeDeepLeft,
+  or,
   over,
   pipe,
 } from "ramda";
-import { PEOPLE_LOAD_PAGE } from "../actions";
+import {
+  PEOPLE_LOAD_DETAILS,
+  PEOPLE_LOAD_PAGE,
+} from "../actions/types";
 
 const initialState = {
   byIds: {},
@@ -16,6 +23,14 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+  case PEOPLE_LOAD_DETAILS:
+    {
+      const {details} = action;
+      const {url: id} = details;
+      return pipe(
+        over(lensPath(["byIds", id]), compose(mergeDeepLeft(details), or(__, {}))),
+      )(state);
+    }
   case PEOPLE_LOAD_PAGE:
     {
       const {page, people} = action;

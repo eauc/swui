@@ -8,13 +8,11 @@ import { Segment } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import Menu from "./menu";
 import store from "../store";
-import {
-  peopleLoadPage,
-  peopleLoadVehiclesDetails,
-  vehiclesLoadPage,
-} from "../actions";
+import actions from "../actions";
+
 import PeopleDetails from "./peopleDetails";
 import PeopleList from "./peopleList";
+import VehiclesDetails from "./vehiclesDetails";
 import VehiclesList from "./vehiclesList";
 
 const App = () => (
@@ -29,17 +27,22 @@ const App = () => (
           <Redirect to="/people"/>
         )}/>
     <Route exact path="/people/" render={() => {
-      store.dispatch(peopleLoadPage());
+      store.dispatch(actions.peopleLoadPage());
       return <PeopleList />;
     }} />
     <Route exact path="/people/:id" render={(props) => {
       const id = decodeURIComponent(path(["match","params","id"], props));
-      store.dispatch(peopleLoadVehiclesDetails({id}));
+      store.dispatch(actions.peopleLoadVehiclesDetails({id}));
       return <PeopleDetails />;
     }} />
     <Route exact path="/vehicles/" render={() => {
-      store.dispatch(vehiclesLoadPage());
+      store.dispatch(actions.vehiclesLoadPage());
       return <VehiclesList />;
+    }} />
+    <Route exact path="/vehicles/:id" render={(props) => {
+      const id = decodeURIComponent(path(["match","params","id"], props));
+      store.dispatch(actions.vehiclesLoadPilotsDetails({id}));
+      return <VehiclesDetails />;
     }} />
       </div>
     </Router>

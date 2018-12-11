@@ -11,16 +11,28 @@ import actions from "../actions";
 
 function PeopleDetails(props) {
   const {
-    name,
-    gender,
     birth_year,
+    eye_color,
+    films,
+    gender,
+    hair_color,
     height,
     mass,
-    eye_color,
-    hair_color,
+    name,
     skin_color,
+    species,
     vehicles,
   } = props;
+  const fs = map((url) => (
+    <li key={url}>
+      {url}
+    </li>
+  ), films);
+  const ss = map((url) => (
+    <li key={url}>
+      {url}
+    </li>
+  ), species);
   const vs = map(({url, name}) => (
     <li key={url}>
       <Link to={`/vehicles/${encodeURIComponent(url)}`}>
@@ -31,6 +43,12 @@ function PeopleDetails(props) {
   return (
     <Container text>
       <h2>{name}</h2>
+      <p>
+        <b>Species:</b>
+      </p>
+      <ul>
+        {ss}
+      </ul>
       <p><b>Gender:</b> {gender}</p>
       <p><b>Birth Year:</b> {birth_year}</p>
       <p><b>Height :</b> {height}</p>
@@ -38,6 +56,12 @@ function PeopleDetails(props) {
       <p><b>Eye color:</b> {eye_color}</p>
       <p><b>Hair color:</b> {hair_color}</p>
       <p><b>Skin color:</b> {skin_color}</p>
+      <p>
+        <b>Films:</b>
+      </p>
+      <ul>
+        {fs}
+      </ul>
       <p>
         <b>Vehicles:</b>
       </p>

@@ -14,7 +14,7 @@ import {
 import {
   VEHICLES_LOAD_DETAILS,
   VEHICLES_LOAD_PAGE,
-} from "../actions";
+} from "../actions/types";
 
 const initialState = {
   byIds: {},
