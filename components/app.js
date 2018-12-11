@@ -3,7 +3,7 @@ import {
 } from "ramda";
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import { HashRouter as Router, Redirect, Route } from "react-router-dom";
 import { Segment } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import Menu from "./menu";

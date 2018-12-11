@@ -1,0 +1,15 @@
+version: "3.4"
+services:
+  swui:
+    container_name: swui
+    build:
+      context: .
+      target: build
+    restart: always
+    ports:
+      - "3001:1234"
+      - "3002:3002"
+    command: npm start -- --hmr-port 3002
+    volumes:
+      - .:/app
+      - /app/node_modules
