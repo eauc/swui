@@ -11,11 +11,11 @@ import store from "../store";
 import {
   peopleLoadPage,
   peopleLoadVehiclesDetails,
+  vehiclesLoadPage,
 } from "../actions";
 import PeopleDetails from "./peopleDetails";
 import PeopleList from "./peopleList";
-
-const Vehicles = () => <h2>Vehicles</h2>;
+import VehiclesList from "./vehiclesList";
 
 const App = () => (
   <Provider store={store}>
@@ -38,7 +38,8 @@ const App = () => (
       return <PeopleDetails />;
     }} />
     <Route exact path="/vehicles/" render={() => {
-      return <Vehicles />;
+      store.dispatch(vehiclesLoadPage());
+      return <VehiclesList />;
     }} />
       </div>
     </Router>
